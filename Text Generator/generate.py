@@ -9,7 +9,7 @@ counter = 0
 
 while True:
     # Generate 10 paragraphs of Lorem Ipsum text
-    num_paragraphs = 50000
+    num_paragraphs = 100000
     lorem_text = '\n'.join(lorem.paragraph() for _ in range(num_paragraphs))
 
     # Create the JSON payload
