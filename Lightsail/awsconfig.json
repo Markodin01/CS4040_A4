@@ -1,7 +1,0 @@
-{
-    "db_user": "postgres",
-    "db_password": "ZirEaEl.1",
-    "db_host": "db-metrics.cwvuuc1rmrhv.eu-west-2.rds.amazonaws.com",
-    "db_name": "postgres",
-    "db_port": 5432
-  }

@@ -4,12 +4,11 @@ FROM --platform=linux/amd64  alpine:3.10
 # Set base image (host OS)
 FROM python
 
-WORKDIR /ec2
+WORKDIR /
 
 COPY requirements.txt .
 
-EXPOSE 5000
-
+EXPOSE 5001
 
 # Install any dependencies
 RUN python -m pip install --upgrade pip

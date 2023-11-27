@@ -9,20 +9,17 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import psutil
 from datetime import datetime, timedelta
 import os
-import json
+import os
 
 app = Flask(__name__)
 
-# Load data from JSON file
-with open('awsconfig.json', 'r') as file:
-    aws_config = json.load(file)
-
 # Access variables
-db_user = aws_config["db_user"]
-db_password = aws_config["db_password"]
-db_host = aws_config["db_host"]
-db_name = aws_config["db_name"]
-db_port = aws_config["db_port"]
+db_user = os.environ["db_user"]
+db_password = os.environ["db_password"]
+db_host = os.environ["db_host"]
+db_name = os.environ["db_name"]
+db_port = os.environ["db_port"]
+platfrom = os.environ["platform"]
 
 # Configure PostgreSQL database using Flask-SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
@@ -118,7 +115,7 @@ def save_time_metrics():
         )
 
         metrics = TimeMetrics(
-            platform='lightsail',
+            platform=platfrom,
             requests_handled=requests_handled,
             words_processed=words_processed,
             avg_cpu_utilized=cpu_percent,
@@ -171,7 +168,7 @@ def receive_data():
 
         # Save processing metrics after each API call
         save_text_processing_metrics(
-            platform='lightsail',
+            platform=platfrom,
             text_length=len(words),
             time_elapsed=time_elapsed,
             cpu_utilized=cpu_percent,
@@ -182,10 +179,10 @@ def receive_data():
 
         return jsonify(request_info)
 
-# Schedule the task to save time metrics every minute
-scheduler.add_job(save_time_metrics, 'interval', minutes=1)
-
 if __name__ == '__main__':
+    # Schedule the task to save time metrics every minute
+    scheduler.add_job(save_time_metrics, 'interval', minutes=1)
+    
     port = 5001
     print("App starting...")
     print(f"Listening on {port}")
