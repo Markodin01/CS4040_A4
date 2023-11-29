@@ -1,5 +1,4 @@
 import requests
-import json
 import lorem
 import time
 import os
